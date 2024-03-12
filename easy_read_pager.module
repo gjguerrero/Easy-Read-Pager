@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * Implements functionality for the EasyReadPager module in Drupal 8.
+ *
+ * This module enhances accessibility by enabling paginated text fields,
+ * allowing users to navigate through text content across multiple pages. 
+ * It is particularly beneficial for individuals with cognitive disabilities, 
+ * offering a more manageable and less overwhelming reading experience.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Adjusts the module list to exclude the EasyReadPager extension if present.
+ *
+ * @param array &$extensions Reference to the array of extensions to be modified.
+ */
+function easy_read_pager_exclude_extension_alter(&$extensions) {
+    unset($extensions['easy_read_pager']);
+}
+
+/**
+ * Provides help information for the EasyReadPager module.
+ *
+ * @param string $route_name The name of the current route.
+ * @param RouteMatchInterface $route_match The route match object.
+ * @return string The HTML content providing help and instructions for the module.
+ */
+function easy_read_pager_help($route_name, RouteMatchInterface $route_match) {
+    if ($route_name === 'help.page.easy_read_pager') {
+        $helpHTML = '<h3>EasyReadPager Module Assistance</h3>';
+        $helpHTML .= '<p>The EasyReadPager module facilitates creating paginated text fields in Drupal 8, enhancing accessibility and improving user experience, especially for users with cognitive disabilities.</p>';
+
+        return $helpHTML;
+    }
+}
+
+/**
+ * Registers themes for the EasyReadPager module.
+ *
+ * This function informs Drupal about custom theming options provided by the module,
+ * such as templates and variables for rendering paginated content.
+ *
+ * @return array An associative array containing theme registration information.
+ */
+function easy_read_pager_theme() {
+    return [
+        'easy_read_pager_component' => [
+            'variables' => [
+                'pageNumber' => 0,
+                'contentItems' => NULL,
+                'pagerSettings' => [],
+            ],
+        ],
+    ];
+}
+
+/**
+ * Suggests template names based on field names for EasyReadPager.
+ *
+ * @param array $variables Variables available to the template.
+ * @return array An array of suggested template names.
+ */
+function easy_read_pager_template_suggestions(array $variables) {
+    $suggestions = [];
+    $pagerSettings = $variables['pagerSettings'];
+
+    if (!empty($pagerSettings['#field_name'])) {
+        $suggestions[] = 'easy_read_pager__' . $pagerSettings['#field_name'];
+    }
+
+    return $suggestions;
+}

@@ -1,0 +1,6 @@
+name: Easy Read Pager
+description: Enhances accessibility by enabling the creation of paginated text fields, allowing users to navigate through multiple pages within a single text field. Ideal for improving accessibility, especially for individuals with cognitive disabilities.
+package: Custom
+
+type: module
+core: '8.x'

@@ -1,0 +1,35 @@
+{#
+/**
+ * Custom theme implementation for displaying a paginated text field.
+ *
+ * This template enhances accessibility by structuring the pagination
+ * controls with ARIA roles and improving keyboard navigation.
+ *
+ * Variables:
+ * - items: An array of pagination items.
+ * - index: The current page index.
+ * - settings: Configuration options including entity type, bundle, etc.
+ */
+#}
+
+{% if items %}
+  <nav class="easy-read-pager" role="navigation" aria-label="Pagination Navigation">
+    <ul class="easy-read-pagination" role="list">
+      {% for key, item in items %}
+        <li class="easy-read-pager__item" role="listitem">
+          {# Handle previous page link #}
+          {% if item.text == 'Anterior' and index > 0 %}
+            <a href="{{ item.href }}" class="{{ key == index ? 'is-active' : '' }}" aria-label="Go to Previous Page" rel="prev">Previous Page</a>
+          {% elseif item.text == 'Siguiente' %}
+            {# Check if it's the last item to loop back to start or move to next page #}
+            {% if items|length == index %}
+              <a href="{{ item.href }}" class="{{ key == index ? 'is-active' : '' }}" aria-label="Start Over" rel="start">Start Over</a>
+            {% else %}
+              <a href="{{ item.href }}" class="{{ key == index ? 'is-active' : '' }}" aria-label="Go to Next Page" rel="next">Next Page</a>
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endif %}
